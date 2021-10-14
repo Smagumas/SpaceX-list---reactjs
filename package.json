@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "webpack-dev-server --mode=development",
     "build": "NODE_ENV=production npm run clean && webpack -p",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "magic": "webpack"
   },
   "repository": {
     "type": "git",
@@ -21,18 +22,24 @@
   "homepage": "https://github.com/Smagumas/Teltonika-SpaceX#readme",
   "dependencies": {
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "sanitize.css": "^13.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "@babel/preset-react": "^7.14.5",
-    "babel-loader": "^8.2.2",
+    "@types/node": "^16.10.9",
+    "@types/react": "^17.0.29",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.1",
+    "axios": "^0.23.0",
     "css-loader": "^6.4.0",
     "html-webpack-plugin": "^5.3.2",
     "react-hot-loader": "^4.13.0",
     "react-jss": "^10.8.0",
+    "react-redux": "^7.2.5",
+    "react-router": "^5.2.1",
     "style-loader": "^3.3.0",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.4.4",
     "webpack": "^5.58.2",
     "webpack-cli": "^4.9.0",
     "webpack-dev-server": "^4.3.1"

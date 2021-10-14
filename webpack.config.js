@@ -8,15 +8,15 @@ const VENDOR_LIBS = [
 
 module.exports = {
     entry: {
-        bundle: './src/index.js',
+        bundle: './src/index.tsx',
         vendor: VENDOR_LIBS
     },
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/,
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
-                use: ['babel-loader'],
+                use: ['ts-loader'],
             },
             {
                 use: ['style-loader', 'css-loader'],
@@ -25,7 +25,7 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx'],
+        extensions: ['.js', '.ts', '.tsx'],
     },
     output: {
         path: path.join(__dirname, './dist'),
