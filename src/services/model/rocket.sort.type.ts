@@ -1,0 +1,1 @@
+export type RocketSortTypes = 'cost_per_launch' | 'height' | 'diameter' | 'mass' | 'rocket_name';
