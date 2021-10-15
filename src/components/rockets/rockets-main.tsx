@@ -3,7 +3,7 @@ import IRocket from '../../data-services/model/rocket.type';
 import rocketsDataService from '../../data-services/rockets.data.service';
 import { OrderType } from '../../services/model/order.type';
 import IRocketSortState from '../../services/model/rocket.sort-state.type';
-import { RocketSortTypes } from '../../services/model/rocket.sort.type';
+import { RocketBasicSortTypes, RocketLengthSortTypes, RocketMassSortTypes, RocketSortTypes } from '../../services/model/rocket.sort.type';
 import rocketsService from '../../services/rockets.service';
 import RocketsList from './rockets-list';
 import RocketsSearch from './rockets-search';
@@ -20,12 +20,11 @@ interface State {
   filteredRockets: Array<IRocket>
 };
 
-class RocketsMain extends Component<Props, State> {
+export class RocketsMain extends Component<Props, State> {
   sortState: IRocketSortState;
 
   constructor(props: Props) {
     super(props);
-    this.getRockets = this.getRockets.bind(this);
 
     this.state = {
       searchText: '',
@@ -58,17 +57,17 @@ class RocketsMain extends Component<Props, State> {
     // TODO persist sort state?
   }
 
-  onSortClick(key: RocketSortTypes): void {
+  onSortClick(key: RocketBasicSortTypes): void {
     this.setSortState(key);
     this.setState({ filteredRockets: rocketsService.sortBy(this.state.filteredRockets, key, this.sortState.order) });
   }
 
-  onSortLengthClick(key: RocketSortTypes): void {
+  onSortLengthClick(key: RocketLengthSortTypes): void {
     this.setSortState(key);
     this.setState({ filteredRockets: rocketsService.sortByLength(this.state.filteredRockets, key, this.sortState.order) });
   }
 
-  onSortMassClick(key: RocketSortTypes): void {
+  onSortMassClick(key: RocketMassSortTypes): void {
     this.setSortState(key);
     this.setState({ filteredRockets: rocketsService.sortByMass(this.state.filteredRockets, key, this.sortState.order) });
   }
@@ -88,7 +87,7 @@ class RocketsMain extends Component<Props, State> {
 
     return (
       <div className={classes.mainContainer}>
-        <RocketsSearch onChange={this.onChange.bind(this)} searchText={this.state.searchText} resultCount={this.state.filteredRockets.length} />
+        <RocketsSearch onChange={this.onChange.bind(this)} searchText={this.state.searchText} resultCount={this.state.filteredRockets?.length} />
         <table className={classes.table}>
           <thead className={classes.tableHeader}>
             <tr>

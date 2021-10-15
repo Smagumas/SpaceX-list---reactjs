@@ -3,7 +3,7 @@ import IMass from "../data-services/model/mass.type";
 import IRocket from "../data-services/model/rocket.type";
 import Utils from "../utils/utils";
 import { OrderType } from "./model/order.type";
-import { RocketSortTypes } from "./model/rocket.sort.type";
+import { RocketBasicSortTypes, RocketLengthSortTypes, RocketMassSortTypes, RocketSortTypes } from "./model/rocket.sort.type";
 
 class RocketsService {
   filterRocketsByName(rockets: IRocket[], searchText: string): IRocket[] {
@@ -12,7 +12,7 @@ class RocketsService {
     })
   }
 
-  sortBy(rockets: IRocket[], key: RocketSortTypes, order: OrderType): IRocket[] {
+  sortBy(rockets: IRocket[], key: RocketBasicSortTypes, order: OrderType): IRocket[] {
     if (order === OrderType.Asc) {
       return rockets.sort((a,b) => Utils.sortAsc(a[key], b[key]));
     } else {
@@ -20,7 +20,7 @@ class RocketsService {
     }
   }
 
-  sortByLength(rockets: IRocket[], key: RocketSortTypes, order: OrderType): IRocket[] {
+  sortByLength(rockets: IRocket[], key: RocketLengthSortTypes, order: OrderType): IRocket[] {
     return rockets.sort((a,b) => {
       const sortA = (a[key] as ILength).meters;
       const sortB = (b[key] as ILength).meters;
@@ -32,7 +32,7 @@ class RocketsService {
     });
   }
 
-  sortByMass(rockets: IRocket[], key: RocketSortTypes, order: OrderType): IRocket[] {
+  sortByMass(rockets: IRocket[], key: RocketMassSortTypes, order: OrderType): IRocket[] {
     return rockets.sort((a,b) => {
       const sortA = (a[key] as IMass).kg;
       const sortB = (b[key] as IMass).kg;
