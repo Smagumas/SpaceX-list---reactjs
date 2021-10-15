@@ -1,15 +1,18 @@
 import { Component } from 'react';
+import withStyles, { WithStylesProps } from 'react-jss';
 import IRocket from '../../data-services/model/rocket.type';
+import { tableStyles } from './styles';
 
-type Props = {
+interface Props extends WithStylesProps<typeof tableStyles> {
+  className?: string
   rockets: Array<IRocket>
 };
 
-type State = {
+interface State {
   rockets: Array<IRocket>
 };
 
-export default class RocketsList extends Component<Props, State> {
+class RocketsList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -25,20 +28,26 @@ export default class RocketsList extends Component<Props, State> {
   }
 
   render() {
+    const { classes, className } = this.props;
     const { rockets } = this.state;
+    const priceRegex = /\B(?=(\d{3})+(?!\d))/g;
+
 
     return (
       <tbody>
         {rockets && rockets.map((rocket) => (
-          <tr key={rocket.id}>
-            <td>{rocket.rocket_name}</td>
-            <td>{rocket.diameter.meters}m</td>
-            <td>{rocket.height.meters}m</td>
-            <td>{rocket.mass.kg}kg</td>
-            <td>${rocket.cost_per_launch}</td>
+          <tr className={classes.tableRow} key={rocket.id}>
+            <td className={classes.textValue}>{rocket.rocket_name}</td>
+            <td className={classes.numericValue}>{rocket.diameter.meters}m</td>
+            <td className={classes.numericValue}>{rocket.height.meters}m</td>
+            <td className={classes.numericValue}>{rocket.mass.kg}kg</td>
+            <td className={classes.numericValue}>${rocket.cost_per_launch.toString().replace(priceRegex, " ")}</td>
           </tr>
         ))}
       </tbody>
     );
   }
 }
+
+
+export default withStyles(tableStyles)(RocketsList);

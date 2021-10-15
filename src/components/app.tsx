@@ -1,12 +1,34 @@
-import * as React from 'react'
+import { Component } from 'react';
+import withStyles, { WithStylesProps } from 'react-jss';
 import RocketsMain from './rockets/rockets-main';
+import '../assets/styles.css';
 
-export default class App extends React.Component <{}> {
+const styles = {
+  mainContainer: {
+    backgroundColor: '#f5f5f6',
+    display: 'flex',
+    margin: [[20, 30]]
+  }
+};
+
+interface Props extends WithStylesProps<typeof styles> {
+  className?: string,
+}
+
+interface State {
+}
+
+class App extends Component<Props, State> {
+
   render() {
+    const { classes, className } = this.props;
     return (
-      <div>
+      <div className={classes.mainContainer}>
         <RocketsMain />
       </div>
     );
   }
 }
+
+
+export default withStyles(styles)(App);

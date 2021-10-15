@@ -19,22 +19,29 @@ module.exports = {
                 use: ['ts-loader'],
             },
             {
-                use: ['style-loader', 'css-loader'],
-                test: /\.css$/
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.svg?$/,
+                use: {
+                    loader: 'file-loader'
+                }
             }
+              
         ],
     },
     resolve: {
         extensions: ['.js', '.ts', '.tsx'],
     },
     output: {
-        path: path.join(__dirname, './dist'),
+        path: path.resolve(__dirname, './dist'),
         filename: '[name].[chunkhash].js'
     },
     optimization: {
         splitChunks: {
-          // include all types of chunks
-          chunks: 'all',
+            // include all types of chunks
+            chunks: 'all',
         },
     },
     plugins: [

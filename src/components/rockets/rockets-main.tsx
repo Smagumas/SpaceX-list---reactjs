@@ -7,18 +7,20 @@ import { RocketSortTypes } from '../../services/model/rocket.sort.type';
 import rocketsService from '../../services/rockets.service';
 import RocketsList from './rockets-list';
 import RocketsSearch from './rockets-search';
+import withStyles, { WithStylesProps } from 'react-jss';
+import { tableStyles } from './styles';
 
-type Props = {
+interface Props extends WithStylesProps<typeof tableStyles> {
+  className?: string
 };
 
-type State = {
+interface State {
   searchText: string,
   rockets: Array<IRocket>,
   filteredRockets: Array<IRocket>
 };
 
-export default class RocketsMain extends Component<Props, State> {
-
+class RocketsMain extends Component<Props, State> {
   sortState: IRocketSortState;
 
   constructor(props: Props) {
@@ -32,7 +34,7 @@ export default class RocketsMain extends Component<Props, State> {
     };
 
     this.sortState = {
-      column: 'cost_per_launch',
+      column: 'rocket_name',
       order: OrderType.Asc
     }
   }
@@ -71,23 +73,43 @@ export default class RocketsMain extends Component<Props, State> {
     this.setState({ filteredRockets: rocketsService.sortByMass(this.state.filteredRockets, key, this.sortState.order) });
   }
 
+  getSortOrder(key: RocketSortTypes): string {
+    const { classes, className } = this.props;
+
+    if (this.sortState.column === key) {
+      return this.sortState.order === OrderType.Asc ? classes.asc : classes.desc;
+    } else {
+      return '';
+    }
+  }
+
   render() {
+    const { classes, className } = this.props;
+
     return (
-      <div>
-        <div>
-          <RocketsSearch onChange={this.onChange.bind(this)} searchText={this.state.searchText} resultCount={this.state.filteredRockets.length} />
-        </div>
-        <table>
-          <thead>
+      <div className={classes.mainContainer}>
+        <RocketsSearch onChange={this.onChange.bind(this)} searchText={this.state.searchText} resultCount={this.state.filteredRockets.length} />
+        <table className={classes.table}>
+          <thead className={classes.tableHeader}>
             <tr>
-              <th onClick={() => this.onSortClick('rocket_name')}>Rocket name</th>
-              <th onClick={() => this.onSortLengthClick('diameter')}>Diameter</th>
-              <th onClick={() => this.onSortLengthClick('height')}>Height</th>
-              <th onClick={() => this.onSortMassClick('mass')}>Mass</th>
-              <th onClick={() => this.onSortClick('cost_per_launch')}>Cost per launch</th>
+              <th className={`${classes.textValue} ${this.getSortOrder('rocket_name')}`} onClick={() => this.onSortClick('rocket_name')}>
+                Rocket name
+              </th>
+              <th className={`${classes.numericValue} ${this.getSortOrder('diameter')}`} onClick={() => this.onSortLengthClick('diameter')}>
+                Diameter
+              </th>
+              <th className={`${classes.numericValue} ${this.getSortOrder('height')}`} onClick={() => this.onSortLengthClick('height')}>
+                Height
+              </th>
+              <th className={`${classes.numericValue} ${this.getSortOrder('mass')}`} onClick={() => this.onSortMassClick('mass')}>
+                Mass
+              </th>
+              <th className={`${classes.numericValue} ${this.getSortOrder('cost_per_launch')}`} onClick={() => this.onSortClick('cost_per_launch')}>
+                Cost per launch
+              </th>
             </tr>
           </thead>
-          <RocketsList rockets={this.state.filteredRockets} />
+          <RocketsList classes={classes} rockets={this.state.filteredRockets} />
         </table>
       </div>
     );
@@ -105,3 +127,5 @@ export default class RocketsMain extends Component<Props, State> {
     }
   }
 }
+
+export default withStyles(tableStyles)(RocketsMain);

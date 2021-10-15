@@ -1,12 +1,16 @@
-import { ChangeEvent, Component, Dispatch } from 'react';
+import { ChangeEvent, Component } from 'react';
+import withStyles, { WithStylesProps } from 'react-jss';
+import { stylesSearch } from './styles';
 
-type Props = {
+
+interface Props extends WithStylesProps<typeof stylesSearch> {
   resultCount: number,
   searchText: string,
-  onChange(searchText: string): void
+  onChange(searchText: string): void,
+  className?: string
 };
 
-type State = {
+interface State {
   resultCount: number,
   searchText: string
 };
@@ -35,12 +39,17 @@ class RocketsSearch extends Component<Props, State> {
   }
 
   render() {
+    const { classes, className } = this.props;
     return (
-      <div>
-        SpaceX rockets <span>{this.state.resultCount}</span> <input onChange={this.onChangeSearchText} />
+      <div className={classes.mainContainer}>
+        <div className={classes.title}>SpaceX rockets</div>
+        <div className={classes.count}>{this.state.resultCount} Results</div>
+        <label className={classes.searchContainer}>
+          <input className={classes.searchInput} onChange={this.onChangeSearchText} placeholder="Search" />
+        </label>
       </div>
     );
   }
 };
 
-export default RocketsSearch;
+export default withStyles(stylesSearch)(RocketsSearch);
