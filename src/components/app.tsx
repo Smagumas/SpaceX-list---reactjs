@@ -21,7 +21,7 @@ interface State {
 class App extends Component<Props, State> {
 
   render() {
-    const { classes, className } = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.mainContainer}>
         <RocketsMain />

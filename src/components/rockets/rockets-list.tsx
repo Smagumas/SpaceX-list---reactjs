@@ -28,7 +28,7 @@ class RocketsList extends Component<Props, State> {
   }
 
   render() {
-    const { classes, className } = this.props;
+    const { classes } = this.props;
     const { rockets } = this.state;
     const priceRegex = /\B(?=(\d{3})+(?!\d))/g;
 

@@ -44,7 +44,7 @@ export class RocketsHeader extends Component<Props, State> {
     }
 
     getSortOrder(key: RocketSortTypes): string {
-        const { classes, className } = this.props;
+        const { classes } = this.props;
 
         if (this.sortState.column === key) {
             return this.sortState.order === OrderType.Asc ? classes.asc : classes.desc;
@@ -54,7 +54,7 @@ export class RocketsHeader extends Component<Props, State> {
     }
 
     render() {
-        const { classes, className } = this.props;
+        const { classes } = this.props;
 
         return (
             <thead className={classes.tableHeader}>
