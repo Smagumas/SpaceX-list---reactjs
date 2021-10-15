@@ -7,6 +7,7 @@ import { RocketBasicSortTypes, RocketLengthSortTypes, RocketMassSortTypes, Rocke
 import rocketsService from '../../services/rockets.service';
 import RocketsList from './rockets-list';
 import RocketsSearch from './rockets-search';
+import RocketsHeader from './rockets-header';
 import withStyles, { WithStylesProps } from 'react-jss';
 import { tableStyles } from './styles';
 
@@ -54,32 +55,18 @@ export class RocketsMain extends Component<Props, State> {
   onChange(searchText: string): void {
     this.setState({ searchText });
     this.setState({ filteredRockets: rocketsService.filterRocketsByName(this.state.rockets, searchText) });
-    // TODO persist sort state?
   }
 
-  onSortClick(key: RocketBasicSortTypes): void {
-    this.setSortState(key);
-    this.setState({ filteredRockets: rocketsService.sortBy(this.state.filteredRockets, key, this.sortState.order) });
+  onSortClick(key: RocketBasicSortTypes, order: OrderType): void {
+    this.setState({ filteredRockets: rocketsService.sortBy(this.state.filteredRockets, key, order) });
   }
 
-  onSortLengthClick(key: RocketLengthSortTypes): void {
-    this.setSortState(key);
-    this.setState({ filteredRockets: rocketsService.sortByLength(this.state.filteredRockets, key, this.sortState.order) });
+  onSortLengthClick(key: RocketLengthSortTypes, order: OrderType): void {
+    this.setState({ filteredRockets: rocketsService.sortByLength(this.state.filteredRockets, key, order) });
   }
 
-  onSortMassClick(key: RocketMassSortTypes): void {
-    this.setSortState(key);
-    this.setState({ filteredRockets: rocketsService.sortByMass(this.state.filteredRockets, key, this.sortState.order) });
-  }
-
-  getSortOrder(key: RocketSortTypes): string {
-    const { classes, className } = this.props;
-
-    if (this.sortState.column === key) {
-      return this.sortState.order === OrderType.Asc ? classes.asc : classes.desc;
-    } else {
-      return '';
-    }
+  onSortMassClick(key: RocketMassSortTypes, order: OrderType): void {
+    this.setState({ filteredRockets: rocketsService.sortByMass(this.state.filteredRockets, key, order) });
   }
 
   render() {
@@ -89,41 +76,14 @@ export class RocketsMain extends Component<Props, State> {
       <div className={classes.mainContainer}>
         <RocketsSearch onChange={this.onChange.bind(this)} searchText={this.state.searchText} resultCount={this.state.filteredRockets?.length} />
         <table className={classes.table}>
-          <thead className={classes.tableHeader}>
-            <tr>
-              <th className={`${classes.textValue} ${this.getSortOrder('rocket_name')}`} onClick={() => this.onSortClick('rocket_name')}>
-                Rocket name
-              </th>
-              <th className={`${classes.numericValue} ${this.getSortOrder('diameter')}`} onClick={() => this.onSortLengthClick('diameter')}>
-                Diameter
-              </th>
-              <th className={`${classes.numericValue} ${this.getSortOrder('height')}`} onClick={() => this.onSortLengthClick('height')}>
-                Height
-              </th>
-              <th className={`${classes.numericValue} ${this.getSortOrder('mass')}`} onClick={() => this.onSortMassClick('mass')}>
-                Mass
-              </th>
-              <th className={`${classes.numericValue} ${this.getSortOrder('cost_per_launch')}`} onClick={() => this.onSortClick('cost_per_launch')}>
-                Cost per launch
-              </th>
-            </tr>
-          </thead>
+          <RocketsHeader
+            onSortClick={this.onSortClick.bind(this)}
+            onSortLengthClick={this.onSortLengthClick.bind(this)}
+            onSortMassClick={this.onSortMassClick.bind(this)} />
           <RocketsList classes={classes} rockets={this.state.filteredRockets} />
         </table>
       </div>
     );
-  }
-
-  private setSortState(key: RocketSortTypes): void {
-    let orderType = OrderType.Asc;
-    if (this.sortState.column === key) {
-      this.sortState.order = this.sortState.order === OrderType.Asc ? OrderType.Desc : OrderType.Asc;
-    } else {
-      this.sortState = {
-        column: key,
-        order: orderType
-      }
-    }
   }
 }
 

@@ -6,7 +6,6 @@ import * as ReactDOM from 'react-dom';
 import rocketsService from '../../services/rockets.service';
 jest.mock('../../services/rockets.service');
 import { fireEvent } from '@testing-library/react';
-import IRocket from '../../data-services/model/rocket.type';
 import rocketsDataService from '../../data-services/rockets.data.service';
 import { configure, shallow } from 'enzyme';
 import * as Adapter from 'enzyme-adapter-react-16';
